@@ -23,7 +23,7 @@ app.use(
 		cookie: {
 			httpOnly: false,
 			secure: false,
-			maxAge: Number(process.env.EXPIRATION_TIME),
+			maxAge: 600000,
 		},
 		rolling: true,
 		resave: true,
