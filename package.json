@@ -1,7 +1,7 @@
 {
 	"name": "desafio",
 	"version": "1.0.0",
-	"description": "",
+	"description": "Desafio clase 26 | Login usuario",
 	"main": "app.js",
 	"type": "module",
 	"scripts": {
@@ -22,6 +22,7 @@
 		"passport-local": "^1.0.0"
 	},
 	"devDependencies": {
+		"@faker-js/faker": "^7.6.0",
 		"nodemon": "^2.0.20"
 	}
 }
