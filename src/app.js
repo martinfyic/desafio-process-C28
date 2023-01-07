@@ -19,11 +19,11 @@ app.use(express.json());
 
 app.use(
 	session({
-		secret: 'keyboard cat',
+		secret: process.env.PASSPORT_SECRET,
 		cookie: {
 			httpOnly: false,
 			secure: false,
-			maxAge: process.env.EXPIRATION_TIME,
+			maxAge: Number(process.env.EXPIRATION_TIME),
 		},
 		rolling: true,
 		resave: true,
