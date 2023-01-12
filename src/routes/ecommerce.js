@@ -3,9 +3,9 @@ import { Router } from 'express';
 import { isAuth } from '../middlewares/isAuth.js';
 import faker from '../utils/faker.js';
 
-const routes = Router();
+const ecommerceRoute = Router();
 
-routes.get('/', isAuth, (req, res) => {
+ecommerceRoute.get('/', isAuth, (req, res) => {
 	const user = req.user;
 	const productsFaker = faker();
 
@@ -15,21 +15,21 @@ routes.get('/', isAuth, (req, res) => {
 	});
 });
 
-routes.get('/login', (req, res) => {
+ecommerceRoute.get('/login', (req, res) => {
 	if (req.isAuthenticated()) return res.redirect('/ecommerce');
 	res.render('login');
 });
-routes.post(
+ecommerceRoute.post(
 	'/login',
 	passport.authenticate('login', { failureRedirect: '/ecommerce/error-login' }),
 	(req, res) => res.redirect('/ecommerce/')
 );
 
-routes.get('/signup', (req, res) => {
+ecommerceRoute.get('/signup', (req, res) => {
 	if (req.isAuthenticated()) return res.redirect('/ecommerce');
 	res.render('signup');
 });
-routes.post(
+ecommerceRoute.post(
 	'/signup',
 	passport.authenticate('signup', {
 		failureRedirect: '/ecommerce/error-signup',
@@ -37,20 +37,20 @@ routes.post(
 	(req, res) => res.redirect('/ecommerce/login')
 );
 
-routes.get('/logout', isAuth, (req, res) => {
+ecommerceRoute.get('/logout', isAuth, (req, res) => {
 	req.logout(err => {
 		if (err) return err;
 		res.redirect('/ecommerce/login');
 	});
 });
 
-routes.get('/error-login', (req, res) => {
+ecommerceRoute.get('/error-login', (req, res) => {
 	if (req.isAuthenticated()) return res.redirect('/ecommerce');
 	res.render('error-login');
 });
-routes.get('/error-signup', (req, res) => {
+ecommerceRoute.get('/error-signup', (req, res) => {
 	if (req.isAuthenticated()) return res.redirect('/ecommerce');
 	res.render('error-signup');
 });
 
-export default routes;
+export default ecommerceRoute;
