@@ -4,7 +4,8 @@ import session from 'express-session';
 import passport from 'passport';
 import { connectionDB } from './config/mongoDB.js';
 import { strategyLogin, strategySignup } from './middlewares/passportLocal.js';
-import routes from './routes/routes.js';
+import ecommerceRoute from './routes/ecommerce.js';
+import infoRouter from './routes/info.js';
 
 const app = express();
 
@@ -34,7 +35,8 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/ecommerce', routes);
+app.use('/ecommerce', ecommerceRoute);
+app.use('/info', infoRouter);
 
 await connectionDB();
 
