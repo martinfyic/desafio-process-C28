@@ -1,8 +1,8 @@
-# 🔥 DESAFIO CLASE 26
+# 🔥 DESAFIO CLASE 26 y 28
 
 ## 📲 INICIO DE SESIÓN
 
-### 👨🏻‍💻 CONSIGNA
+### 👨🏻‍💻 CONSIGNA DESAFIO 26
 
 Se incluirá una vista de registro, en donde se pidan email y contraseña. Estos datos se persistirán usando MongoDb, en una (nueva) colección de usuarios, cuidando que la contraseña quede encriptada (sugerencia: usar la librería bcrypt).
 
@@ -15,6 +15,10 @@ Una vez logueado el usuario, se lo redirigirá al inicio, el cual ahora mostrar�
 Además, se activará un espacio de sesión controlado por la sesión de passport. Esta estará activa por 10 minutos y en cada acceso se recargará este tiempo.
 
 Agregar también vistas de error para login (credenciales no válidas) y registro (usuario ya registrado).
+
+---
+
+### 👨🏻‍💻 CONSIGNA DESAFIO 28
 
 ---
 
