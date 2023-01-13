@@ -6,6 +6,7 @@ import { connectionDB } from './config/mongoDB.js';
 import { strategyLogin, strategySignup } from './middlewares/passportLocal.js';
 import ecommerceRoute from './routes/ecommerce.js';
 import infoRouter from './routes/info.js';
+import randomRoute from './routes/randoms.js';
 
 const app = express();
 
@@ -37,6 +38,7 @@ app.use(passport.session());
 
 app.use('/ecommerce', ecommerceRoute);
 app.use('/info', infoRouter);
+app.use('/api/randoms', randomRoute);
 
 await connectionDB();
 
