@@ -1,4 +1,4 @@
-import faker from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 
 const generateRandomProducts = (numb = 10) => {
 	const listProd = [];
