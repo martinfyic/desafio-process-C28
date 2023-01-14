@@ -6,7 +6,7 @@ export const connectionDB = async () => {
 			console.log(` 💽 Conectado a MongoDB Cloud`);
 		});
 	} catch (error) {
-		console.log(` ⚠️ Error ==> ${error?.message}`);
+		console.log(` ⚠️ Error ==> ${error?.message || error}`);
 		throw new Error('Error al conectarse a MongoDB Cloud');
 	}
 };
