@@ -10,18 +10,54 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0"
 		/>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+			crossorigin="anonymous"
+		/>
 		<title>Info</title>
 	</head>
 	<body>
-		<h1>Informacion del sistema</h1>
-		<ul>
-			<li>Argumento de entrada: <%= info.inputArguments %></li>
-			<li>Nombre de la plataforma (sistema operativo): <%= info.platform %></li>
-			<li>Versión de node.js: <%= info.nodeVersion %></li>
-			<li>Memoria total reservada (rss): <%= info.memoryUsageRSS %></li>
-			<li>Path de ejecución: <%= info.path %></li>
-			<li>Process id: <%= info.processId %></li>
-			<li>Carpeta del proyecto: <%= info.currentWorkDirectory %></li>
-		</ul>
+		<h1 class="text-center m-5">Informacion del sistema</h1>
+
+		<table class="container table table-dark table-striped mt-5 p-5">
+			<thead>
+				<tr>
+					<th scope="col">Datos</th>
+					<th scope="col">Informacion</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Argumento de entrada</td>
+					<td><%= info.inputArguments %></td>
+				</tr>
+				<tr>
+					<td>Nombre de la plataforma (sistema operativo)</td>
+					<td><%= info.platform %></td>
+				</tr>
+				<tr>
+					<td>Versión de node.js</td>
+					<td><%= info.nodeVersion %></td>
+				</tr>
+				<tr>
+					<td>Memoria total reservada (rss)</td>
+					<td><%= info.memoryUsageRSS %></td>
+				</tr>
+				<tr>
+					<td>Path de ejecución</td>
+					<td><%= info.path %></td>
+				</tr>
+				<tr>
+					<td>Process id</td>
+					<td><%= info.processId %></td>
+				</tr>
+				<tr>
+					<td>Carpeta del proyecto</td>
+					<td><%= info.currentWorkDirectory %></td>
+				</tr>
+			</tbody>
+		</table>
 	</body>
 </html>
