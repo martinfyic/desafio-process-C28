@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { isAuth } from '../middlewares/isAuth.js';
 import faker from '../utils/faker.js';
 
-const ecommerceRoute = Router();
+export const ecommerceRoute = Router();
 
 ecommerceRoute.get('/', isAuth, (req, res) => {
 	const user = req.user;
@@ -52,5 +52,3 @@ ecommerceRoute.get('/error-signup', (req, res) => {
 	if (req.isAuthenticated()) return res.redirect('/ecommerce');
 	res.render('error-signup');
 });
-
-export default ecommerceRoute;

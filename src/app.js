@@ -4,9 +4,7 @@ import session from 'express-session';
 import passport from 'passport';
 import { connectionDB } from './config/mongoDB.js';
 import { strategyLogin, strategySignup } from './middlewares/passportLocal.js';
-import ecommerceRoute from './routes/ecommerce.js';
-import infoRouter from './routes/info.js';
-import randomRoute from './routes/randoms.js';
+import { ecommerceRoute, infoRouter, randomRoute } from './routes/index.js';
 
 const app = express();
 
