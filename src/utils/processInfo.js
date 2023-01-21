@@ -1,3 +1,6 @@
+import os from 'node:os';
+const CPUs = os.cpus().length;
+
 export const processInfo = () => {
 	const inputArguments = process.argv;
 	const platform = process.platform;
@@ -15,6 +18,7 @@ export const processInfo = () => {
 		path,
 		processId,
 		currentWorkDirectory,
+		CPUs,
 	};
 };
 
