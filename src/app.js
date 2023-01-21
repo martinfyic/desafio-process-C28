@@ -5,8 +5,8 @@ import passport from 'passport';
 import { connectionDB } from './config/mongoDB.js';
 import { strategyLogin, strategySignup } from './middlewares/passportLocal.js';
 import { ecommerceRoute, infoRouter, randomRoute } from './routes/index.js';
-import { port } from './utils/yargs.js';
 
+const PORT = process.argv[2] || 8080;
 const app = express();
 
 passport.use('login', strategyLogin);
@@ -41,6 +41,6 @@ app.use('/api/randoms', randomRoute);
 
 await connectionDB();
 
-app.listen(port, () =>
-	console.log(`  🚀 Servidor Ok ==> http://localhost:${port}/ecommerce/`)
+app.listen(PORT, () =>
+	console.log(`  🚀 Servidor Ok ==> http://localhost:${PORT}/ecommerce/`)
 );
