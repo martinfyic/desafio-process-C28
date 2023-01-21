@@ -1,5 +1,3 @@
-console.log(`Child Process created ${process.pid}`);
-
 const randomNumbers = cant => {
 	const number = [];
 	const min = 1;
@@ -18,7 +16,6 @@ const randomNumbers = cant => {
 };
 
 process.on('message', msg => {
-	console.log('Child Process received message', msg);
 	const result = randomNumbers(msg);
 	process.send(result);
 });
