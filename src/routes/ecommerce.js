@@ -1,9 +1,9 @@
-import passport from 'passport';
-import { Router } from 'express';
-import { isAuth } from '../middlewares/isAuth.js';
-import faker from '../utils/faker.js';
+const passport = require('passport');
+const { Router } = require('express');
+const isAuth = require('../middlewares/isAuth.js');
+const faker = require('../utils/faker.js');
 
-export const ecommerceRoute = Router();
+const ecommerceRoute = Router();
 
 ecommerceRoute.get('/', isAuth, (req, res) => {
 	const user = req.user;
@@ -52,3 +52,5 @@ ecommerceRoute.get('/error-signup', (req, res) => {
 	if (req.isAuthenticated()) return res.redirect('/ecommerce');
 	res.render('error-signup');
 });
+
+module.exports = ecommerceRoute;

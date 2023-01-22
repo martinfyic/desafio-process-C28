@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { fork } from 'node:child_process';
+const { Router } = require('express');
+const { fork } = require('node:child_process');
 
-export const randomRoute = Router();
+const randomRoute = Router();
 
 randomRoute.get('/', (req, res) => {
 	const cant = req.query.cant || 100000000;
@@ -16,3 +16,5 @@ randomRoute.get('/', (req, res) => {
 		console.log('Se ha cerrado el proceso', code);
 	});
 });
+
+module.exports = randomRoute;

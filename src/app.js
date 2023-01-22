@@ -1,17 +1,24 @@
-import 'dotenv/config';
-import express from 'express';
-import session from 'express-session';
-import passport from 'passport';
-import 'colors';
-import cluster from 'node:cluster';
-import os from 'node:os';
-import { connectionDB } from './config/mongoDB.js';
-import { strategyLogin, strategySignup } from './middlewares/passportLocal.js';
-import { ecommerceRoute, infoRouter, randomRoute } from './routes/index.js';
+require('dotenv/config');
+const express = require('express');
+const session = require('express-session');
+const passport = require('passport');
+require('colors');
+const cluster = require('node:cluster');
+const os = require('node:os');
+const connectionDB = require('./config/mongoDB.js');
+const {
+	strategyLogin,
+	strategySignup,
+} = require('./middlewares/passportLocal.js');
+const {
+	ecommerceRoute,
+	infoRouter,
+	randomRoute,
+} = require('./routes/index.js');
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.argv[2] || 8080;
 
-const mode = process.argv[2] || 'FORK';
+const mode = process.argv[3] || 'FORK';
 const nroCpus = os.cpus().length;
 
 if (cluster.isPrimary && mode === 'CLUSTER') {
@@ -61,9 +68,8 @@ if (cluster.isPrimary && mode === 'CLUSTER') {
 	app.use('/info', infoRouter);
 	app.use('/api/randoms', randomRoute);
 
-	await connectionDB();
-
-	app.listen(PORT, () => {
+	app.listen(PORT, async () => {
+		await connectionDB();
 		console.log(
 			`  🚀 Servidor Ok ==> http://localhost:${PORT}/ecommerce/`.cyan.bold
 		),

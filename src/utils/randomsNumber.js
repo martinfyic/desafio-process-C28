@@ -20,4 +20,4 @@ process.on('message', msg => {
 	process.send(result);
 });
 
-export default randomNumbers;
+module.exports = randomNumbers;

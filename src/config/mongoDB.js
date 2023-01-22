@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import 'colors';
+const mongoose = require('mongoose');
+require('colors');
 
-export const connectionDB = async () => {
+const connectionDB = async () => {
 	try {
 		mongoose.connect(process.env.MONGO_URL, {}, () => {
 			console.log(` 💽 Conectado a MongoDB Cloud`.yellow);
@@ -11,3 +11,5 @@ export const connectionDB = async () => {
 		throw new Error('Error al conectarse a MongoDB Cloud');
 	}
 };
+
+module.exports = connectionDB;

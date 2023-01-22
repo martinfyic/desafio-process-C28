@@ -1,7 +1,7 @@
-import os from 'node:os';
+const os = require('node:os');
 const CPUs = os.cpus().length;
 
-export const processInfo = () => {
+const processInfo = () => {
 	const inputArguments = process.argv;
 	const platform = process.platform;
 	const nodeVersion = process.versions.node;
@@ -22,4 +22,4 @@ export const processInfo = () => {
 	};
 };
 
-export default processInfo;
+module.exports = processInfo;
