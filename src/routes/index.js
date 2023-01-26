@@ -1,3 +1,9 @@
-export { ecommerceRoute } from './ecommerce.js';
-export { infoRouter } from './info.js';
-export { randomRoute } from './randoms.js';
+const ecommerceRoute = require('./ecommerce.js');
+const infoRouter = require('./info.js');
+const randomRoute = require('./randoms.js');
+
+module.exports = {
+	ecommerceRoute,
+	infoRouter,
+	randomRoute,
+};

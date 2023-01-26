@@ -3,7 +3,6 @@
 	"version": "1.0.0",
 	"description": "Desafio clase 26 | Login usuario",
 	"main": "app.js",
-	"type": "module",
 	"scripts": {
 		"start": "node src/app.js",
 		"dev": "nodemon src/app.js"
@@ -13,6 +12,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"bcrypt": "^5.1.0",
+		"colors": "^1.4.0",
 		"dotenv": "^16.0.3",
 		"ejs": "^3.1.8",
 		"express": "^4.18.2",

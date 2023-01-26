@@ -1,7 +1,7 @@
-import passport from 'passport';
-import { Strategy } from 'passport-local';
-import { User } from '../models/user.js';
-import { isValidPassword, createHash } from '../utils/bcrypt.js';
+const passport = require('passport');
+const { Strategy } = require('passport-local');
+const User = require('../models/user.js');
+const { isValidPassword, createHash } = require('../utils/bcrypt.js');
 
 passport.serializeUser((user, done) => {
 	done(null, user._id);
@@ -11,7 +11,7 @@ passport.deserializeUser((id, done) => {
 	User.findById(id, done);
 });
 
-export const strategyLogin = new Strategy((username, password, done) => {
+const strategyLogin = new Strategy((username, password, done) => {
 	User.findOne({ username }, (err, user) => {
 		if (err) return done(err);
 		if (!user) {
@@ -24,7 +24,7 @@ export const strategyLogin = new Strategy((username, password, done) => {
 	});
 });
 
-export const strategySignup = new Strategy(
+const strategySignup = new Strategy(
 	{
 		passReqToCallback: true,
 	},
@@ -51,3 +51,5 @@ export const strategySignup = new Strategy(
 		});
 	}
 );
+
+module.exports = { strategyLogin, strategySignup };

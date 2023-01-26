@@ -1,4 +1,4 @@
-import { faker } from '@faker-js/faker';
+const { faker } = require('@faker-js/faker');
 
 const generateRandomProducts = (numb = 10) => {
 	const listProd = [];
@@ -15,4 +15,4 @@ const generateRandomProducts = (numb = 10) => {
 	return listProd;
 };
 
-export default generateRandomProducts;
+module.exports = generateRandomProducts;

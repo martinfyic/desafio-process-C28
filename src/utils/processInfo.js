@@ -1,9 +1,12 @@
-export const processInfo = () => {
+const os = require('node:os');
+const CPUs = os.cpus().length;
+
+const processInfo = () => {
 	const inputArguments = process.argv;
 	const platform = process.platform;
 	const nodeVersion = process.versions.node;
 	const memoryUsageRSS = process.memoryUsage().rss;
-	const path = process.title;
+	const path = process.execPath;
 	const processId = process.pid;
 	const currentWorkDirectory = process.cwd();
 
@@ -15,7 +18,8 @@ export const processInfo = () => {
 		path,
 		processId,
 		currentWorkDirectory,
+		CPUs,
 	};
 };
 
-export default processInfo;
+module.exports = processInfo;

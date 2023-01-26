@@ -1,7 +1,12 @@
-import bcrypt from 'bcrypt';
+const bcrypt = require('bcrypt');
 
-export const isValidPassword = (user, password) =>
+const isValidPassword = (user, password) =>
 	bcrypt.compareSync(password, user.password);
 
-export const createHash = password =>
+const createHash = password =>
 	bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
+
+module.exports = {
+	isValidPassword,
+	createHash,
+};

@@ -1,103 +1,153 @@
-# 🔥 DESAFIO CLASE 26 y 28
-
-## 📲 INICIO DE SESIÓN
-
-### 👨🏻‍💻 CONSIGNA DESAFIO 26
-
-Se incluirá una vista de registro, en donde se pidan email y contraseña. Estos datos se persistirán usando MongoDb, en una (nueva) colección de usuarios, cuidando que la contraseña quede encriptada (sugerencia: usar la librería bcrypt).
-
-Una vista de login, donde se pida email y contraseña, y que realice la autenticación del lado del servidor a través de una estrategia de passport local.
-
-Cada una de las vistas (logueo - registro) deberá tener un botón para ser redirigido a la otra.
-
-Una vez logueado el usuario, se lo redirigirá al inicio, el cual ahora mostrará también su email, y un botón para desolguearse.
-
-Además, se activará un espacio de sesión controlado por la sesión de passport. Esta estará activa por 10 minutos y en cada acceso se recargará este tiempo.
-
-Agregar también vistas de error para login (credenciales no válidas) y registro (usuario ya registrado).
+# ⚡ SERVIDOR CON BALANCE DE CARGA ⚡
 
 ---
 
-### 👨🏻‍💻 CONSIGNA DESAFIO 28
+## ⚠️ IMPORTANTE ⚠️
 
-Sobre el proyecto del último desafío entregable, mover todas las claves y credenciales utilizadas a un archivo .env, y cargarlo mediante la librería dotenv.
+Para poder realizar este desafio necesitas los siguientes requerimientos:
 
-La única configuración que no va a ser manejada con esta librería va a ser el puerto de escucha del servidor. Éste deberá ser leído de los argumento pasados por línea de comando, usando alguna librería (minimist o yargs). En el caso de no pasar este parámetro por línea de comandos, conectar por defecto al puerto 8080.
+- [Node.js](https://nodejs.org/en/)
 
-Agregar una ruta '/info' que presente en una vista sencilla los siguientes datos:
+- [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) administrador de procesos de produccion de node.js
 
-- Argumentos de entrada
-- Nombre de la plataforma (sistema operativo)
-- Versión de node.js
-- Memoria total reservada (rss)
-- Path de ejecución
-- Process id
-- Carpeta del proyecto
+```bash
+$ npm install pm2@latest -g
+```
 
-Agregar otra ruta '/api/randoms' que permita calcular un cantidad de números aleatorios en el rango del 1 al 1000 especificada por parámetros de consulta (query).
+- [forever](https://github.com/foreversd/forever#readme) Una herramienta CLI simple para garantizar que un script dado se ejecute continuamente
 
-Por ej: /randoms?cant=20000.
+```bash
+$ npm install forever -g
+```
 
-Si dicho parámetro no se ingresa, calcular 100.000.000 números.
-El dato devuelto al frontend será un objeto que contendrá como claves los números random generados junto a la cantidad de veces que salió cada uno. Esta ruta no será bloqueante (utilizar el método fork de child process). Comprobar el no bloqueo con una cantidad de 500.000.000 de randoms.
+- [Nginx](https://nginx.org/en/docs/) es un servidor web, orientado a eventos. Descargar la última versión mainline.
 
 ---
 
-## ⏬ CLONAR REPO ⏬
+## 👨🏻‍💻 DESAFIO CLASE 30
 
-Debes tener [NodeJS](<[https://](https://nodejs.org/en/)>) instalado en tu PC
+Retomemos nuestro trabajo para poder ejecutar el servidor en modo fork o cluster, ajustando el balance de carga a través de [Nginx](https://nginx.org/en/docs/).
 
-Clona el repositorio:
+### Consigna:
 
-```
-git clone https://github.com/martinfyic/desafio-process-C28.git
-```
+Tomando con base el proyecto que vamos realizando, agregar un parámetro más en la ruta de comando que permita ejecutar al servidor en modo fork o cluster. Dicho parámetro será 'FORK' en el primer caso y 'CLUSTER' en el segundo, y de no pasarlo, el servidor iniciará en modo fork.
 
-Una vez clonado debes dirigirte a la carpeta generada:
+- Agregar en la vista info, el número de procesadores presentes en el servidor.
+- Ejecutar el servidor (modos FORK y CLUSTER) con nodemon verificando el número de procesos tomados por node.
+- Ejecutar el servidor (con los parámetros adecuados) utilizando Forever, verificando su correcta operación. Listar los procesos por Forever y por sistema operativo.
+- Ejecutar el servidor (con los parámetros adecuados: modo FORK) utilizando [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) en sus modos modo fork y cluster. Listar los procesos por [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) y por sistema operativo.
+- Tanto en Forever como en [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) permitir el modo escucha, para que la actualización del código del servidor se vea reflejado inmediatamente en todos los procesos.
+- Hacer pruebas de finalización de procesos fork y cluster en los casos que corresponda.
 
-```
-cd desafio-login-C26
-```
+Utilizando [Nginx](https://nginx.org/en/docs/) configurar para balancear cargas de nuestro servidor de la siguiente manera:
 
-Cuando estes en la carpeta debes correr el siguiente comando para que se instalen las dependencias necesarias para correr este desafio:
+- Redirigir todas las consultas a /api/randoms a un cluster de servidores escuchando en el puerto 8081. El cluster será creado desde node utilizando el módulo nativo cluster.
+- El resto de las consultas, redirigirlas a un servidor individual escuchando en el puerto 8080.
+- Luego, modificar la configuración para que todas las consultas a /api/randoms sean redirigidas a un cluster de servidores gestionado desde [Nginx](https://nginx.org/en/docs/), repartiéndolas equitativamente entre 4 instancias escuchando en los puertos 8082, 8083, 8084 y 8085 respectivamente.
 
-```
-npm i
-```
+### 🔥 Resolución
 
-o
+🚩 *Este desafio fue realizado en Windows 11 y CommonJS, ya que los ES Modules no me funcionaron con [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) al hacer los clusters, sigo investigando los motivos*🚩
 
-```
-npm install
-```
+1. En la ruta `GET /info` se encuentra la información del sistema como el nro de procesadores.
 
-⚠️ luego que tengas todo instalado correctamente, debes tener un archivo con variables de entorno `.env`, en el repositorio debes guiarte por el `.env.example`.
+2. El servidor iniciado con node por defecto se ejecutara en modo `FORK` pero podemos inicarlo por parametro si queremos modo `FORK` o `CLUSTER`
 
-Crea el archivo .env con el siguiente comando:
+Ejemplo:
 
-```
-touch .env
-```
-
-Agrega las siguientes variables de entorno al archivo creado anteriormente:
-
-- `PASSPORT_SECRET` Debe ser un **String**, es la variable del secret que usa express-session para formar el token
-- `MONGO_URL` **URL** de MongoDB Cloud (mongo Atlas)
-
----
-
-## 🚀 ARRANCAR PROYECTO
-
-Para arrancar el proyecto debes indicar por consola el puerto que quieres conectarte, por ejemplo con el siguiente comando:
-
-```
-node src/app.js -p 3000
+```bash
+$ npm start <puerto> FORK
+#o
+$ npm run dev <puerto> FORK
 ```
 
-ó
+```bash
+$ npm start <puerto> CLUSTER
+#o
+$ npm run dev <puerto> CLUSTER
+```
+
+3. Para ejecutar [forever](https://github.com/foreversd/forever#readme) debemos ejecutar los siguientes comandos:
+
+```bash
+$ forever start src/app.js <puerto> FORK
+```
+
+```bash
+$ forever start src/app.js <puerto> CLUSTER
+```
+
+Con el comando `forever --help` nos indicra una lista de todos los posibles comando que podemos usar de forma de ayuda.
+
+4. Utilizando [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) debemos ejecutar los comandos:
+
+```bash
+#Modo FORK
+
+$ pm2 start src/app.js --name Servername --watch -- <puerto>
+```
+
+```bash
+# Modo CLUSTER
+
+$ pm2 start src/app.js --name Servername --watch -i max -- <puerto>
+```
+
+Tener en cuenta que `--name` y `--watch` son opcionales, para modo cluster el valor `max` tambien podemos indicarle la cantidad ejemplo 3.
+
+para listar los procesos podemos ejecutar dos comandos:
+
+```bash
+$ pm2 list
+# o
+$ pm2 monit
+```
+
+los logs los podemos ver ejecutando `pm2 logs` y si le indicamos el id del servidor nos puestra solo los de ese servidor
+
+ejecutando el comando `pm2 --help` nos listara todos los comandos con su descripcion para poder utilixar
+
+5. Balanceador de carga (https://nginx.org/en/docs/) el archivo de configuración [link](nginx.conf)
+
+Para este ejercicio debemos crear los servidors en los puertos indicados, con [PM2](https://pm2.keymetrics.io/docs/usage/quick-start/) los ejecutamos en modo `CLUSTER` o `FORK`
+
+```bash
+$ pm2 start src/app.js --name Server0 --watch -i 5 -- 8082
+$ pm2 start src/app.js --name Server1 --watch -i max -- 8083
+$ pm2 start src/app.js --name Server2 --watch -- 8084
+$ pm2 start src/app.js --name Server3 --watch -i 6 -- 8085
+```
+
+Ahora [Nginx](https://nginx.org/en/docs/) se encargara de realizar el balanceo de cargas entre los puertos indicados en la configuración [link](nginx.conf).
 
 ```
-nodemon src/app.js -p 3000
-```
+# nginx.config
 
-Si no indicas un puerto para conectarte se conectara por defecto al `8080`
+events {
+
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+   upstream node_app {
+    server 127.0.0.1:8082;
+    server 127.0.0.1:8083;
+    server 127.0.0.1:8084;
+    server 127.0.0.1:8085;
+   }
+
+   server {
+    listen 80;
+    server_name mginx_node;
+    root C:\Users\marti\Desktop\Dev\Descargas-Guithub\backend-desafio-Clase26\src\views;
+
+    location /info/ {
+        proxy_pass http://node_app;
+    }
+   }
+
+}
+
+```
